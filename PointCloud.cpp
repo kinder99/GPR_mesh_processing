@@ -60,6 +60,7 @@ bool PointCloud::load(const string &filename)
 	}
 	if(!bNormals)
 	{
+		std::cout << "normals should be here" << std::endl;
 		NormalEstimator nEstimator;
 		
 		nEstimator.computePointCloudNormals(points, normals);

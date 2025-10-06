@@ -4,6 +4,9 @@
 
 #include <vector>
 #include <glm/glm.hpp>
+#include <Eigen/Dense>
+#include <numeric>
+#include <iostream>
 
 
 using namespace std;
@@ -14,7 +17,7 @@ class NormalEstimator
 
 public:
 	void computePointCloudNormals(const vector<glm::vec3> &points, vector<glm::vec3> &normals);
-
+	static bool comp(float a, float b);
 };
 
 
