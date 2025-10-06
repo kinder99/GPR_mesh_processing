@@ -17,7 +17,6 @@ class NormalEstimator
 
 public:
 	void computePointCloudNormals(const vector<glm::vec3> &points, vector<glm::vec3> &normals);
-	static bool comp(float a, float b);
 };
 
 
