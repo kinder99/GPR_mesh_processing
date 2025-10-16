@@ -21,7 +21,7 @@ public:
 private:
 	PointCloud *cloud1, *cloud2;
 	NearestNeighbors knn;
-
+	std::vector<bool> isBorder;
 };
 
 
