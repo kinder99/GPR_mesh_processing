@@ -61,51 +61,28 @@ void IterativeClosestPoint::markBorderPoints()
 			Eigen::Vector3f substract = Eigen::Vector3f(current_neighbor.x - point.x, current_neighbor.y - point.y, current_neighbor.z - point.z);
 			current_neighbor.x = eigenvecs.col(2).dot(substract);
 			current_neighbor.y = eigenvecs.col(1).dot(substract);
-			current_neighbor.z = 0;//eigenvecs.col(0).dot(substract);
+			current_neighbor.z = 0;//discard Z component to project on xy plane
 			float angle = atan2(current_neighbor.y, current_neighbor.x) * (180/M_PI); //get angle value in degrees
 			neighbor_angles.push_back(angle);
 		}
 
 		neighbors.erase(neighbors.begin() + 0); //erase current point from neighbors
 
-		//compute angles of neighbors of current point
-		// for (int i = 0; i < neighbors.size(); i++){
-		// 	float angle = atan2(points.at(neighbors.at(i)).y, points.at(neighbors.at(i)).x) * (180/M_PI); //get angle value in degrees
-		// 	neighbor_angles.push_back(angle);
-		// }
-
 		//sort angles then look for maxDeltaAlpha (the largest)
 		std::sort(neighbor_angles.begin(), neighbor_angles.end());
-		if (counter == 1500){
-			for(auto val : neighbor_angles){
-				std::cout << "angle : " << val << std::endl;
-			}
-		}
 		float maxDeltaAlpha = 0;
-		float sum_diff = 0.0f;
 		float difference = 360 - (neighbor_angles.back() - neighbor_angles.front());
-		sum_diff += difference;
-		if(counter == 1500){
-			//std::cout << neighbor_angles.back() - neighbor_angles.front() << std::endl;
-			//std::cout << "difference : " << difference << std::endl;
-		}
 		difference > maxDeltaAlpha ? maxDeltaAlpha = difference : maxDeltaAlpha = maxDeltaAlpha;
 		for(int i = 0; i < neighbor_angles.size()-1; i++){
 			difference = neighbor_angles.at(i+1) - neighbor_angles.at(i);
-			sum_diff += difference;
-			if(counter == 1500){
-				//std::cout << "difference : " << difference << std::endl;
-			}
 			difference > maxDeltaAlpha ? maxDeltaAlpha = difference : maxDeltaAlpha = maxDeltaAlpha; // accumulate maxDeltaAlpha difference value
 		}
-		//std::cout << "counter : " << counter << " : " << sum_diff << std::endl;
 		maxDeltaAlpha > 90 ? isBorder.at(counter) = true : isBorder.at(counter) = false; //check value of maxDeltaAlpha angle to set border point status
 		counter++;
 	}
 	for(int i = 0; i < points.size(); i++){
-		//std::cout << isBorder.at(i) << std::endl;
 		if(isBorder.at(i) == true){
-			(cloud1->getColors()).at(i) = glm::vec4(1,0,0,1);
+			(cloud1->getColors()).at(i) = glm::vec4(1,0,0,1); //set color as red if point is a border point
 		}
 	}
 }
